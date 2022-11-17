@@ -1,16 +1,11 @@
 pipeline {
-  agent {
-    ecs {
-      inheritFrom 'base'
-    }
-  }
-  tools {
-    nodejs 'node'
-  }
+  agent { ecs { inheritFrom 'base' } }
+  tools { nodejs 'node' }
   stages {
     stage('Install') {
       steps {
         sh "yarn install"
+      }
     }
     stage('Build') {
       steps {
