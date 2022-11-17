@@ -8,11 +8,6 @@ pipeline {
     nodejs 'node'
   }
   stages {
-     stage('Install') {
-      steps {
-        sh "yarn install"
-      }
-    }
      stage('Build') {
       steps {
         sh "yarn build"
@@ -20,9 +15,11 @@ pipeline {
     }
      stage('Test') {
       steps {
-        sh "yarn preversion"
+        sh """
+          yarn lint
+          yarn Test
+        """
       }
     }
   }
 }
-
