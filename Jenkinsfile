@@ -8,18 +8,16 @@ pipeline {
     nodejs 'node'
   }
   stages {
-     stage('Install') {
+    stage('Install') {
       steps {
         sh "yarn install"
-      }
     }
-  stages {
-     stage('Build') {
+    stage('Build') {
       steps {
         sh "yarn prepare"
       }
     }
-     stage('Test') {
+    stage('Test') {
       steps {
         sh """
           yarn preversion
