@@ -15,7 +15,7 @@
     "preversion": "yarn lint",
     "version": "yarn lint && git add -A src",
     "postversion": "git push && git push --tags",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "yarn lint -- --fix",
     "lint:staged": "lint-staged",
@@ -52,6 +52,9 @@
     "*.{json,md,yaml}": [
       "prettier --write"
     ]
+  },
+  "publishConfig": {
+    "registry": "http://your-host:8081/repository/npm-private/"
   },
   "devDependencies": {
     "@types/jest": "^29.2.2",
