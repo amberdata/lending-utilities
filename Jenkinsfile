@@ -1,23 +1,28 @@
 pipeline {
   agent { ecs { inheritFrom 'base' } }
-  tools { nodejs 'node' }
   stages {
     stage('Install') {
       steps {
-        sh "yarn install"
+        yarn 'install'
       }
     }
     stage('Build') {
       steps {
-        sh "yarn prepare"
+        yarn 'prepare'
       }
     }
     stage('Test') {
       steps {
-        sh """
-          yarn preversion
-          yarn test
-        """
+        yarn 'preversion'
+        yarn 'test'
+      }
+    }
+    stage('Publish') {
+      steps {
+        withNPMWrapper('nexus-npm') {
+          npm 'init -y'
+          npm command: 'publish'
+        }
       }
     }
   }
