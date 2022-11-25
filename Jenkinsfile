@@ -8,19 +8,18 @@ pipeline {
     }
     stage('Build') {
       steps {
-        yarn 'prepare'
+        yarn command: 'prepare'
       }
     }
     stage('Test') {
       steps {
-        yarn 'preversion'
-        yarn 'test'
+        yarn command: 'preversion'
+        yarn command: 'test'
       }
     }
     stage('Publish') {
       steps {
-        withNPMWrapper('nexus-npm') {
-          npm 'init -y'
+        withNPMWrapper(credentialsId: 'nexus-npm', yarnEnabled: false) {
           npm command: 'publish'
         }
       }
