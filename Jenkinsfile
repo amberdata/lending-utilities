@@ -1,26 +1,27 @@
 pipeline {
   agent { ecs { inheritFrom 'base' } }
+  tools { nodejs 'node' }
   stages {
     stage('Install') {
       steps {
-        yarn 'install'
+        yarn install
       }
     }
     stage('Build') {
       steps {
-        yarn command: 'prepare'
+        yarn prepare
       }
     }
     stage('Test') {
       steps {
-        yarn command: 'preversion'
-        yarn command: 'test'
+        yarn preversion
+        yarn test
       }
     }
     stage('Publish') {
       steps {
-        withNPMWrapper(credentialsId: 'nexus-npm', yarnEnabled: false) {
-          npm command: 'publish'
+        nodejs(configId: 'npmrc-publish', nodeJSInstallationName: 'node16') {
+        npm ls -l
         }
       }
     }
