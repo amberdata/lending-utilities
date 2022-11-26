@@ -54,7 +54,7 @@
     ]
   },
   "publishConfig": {
-    "registry": "https://nexus.amberdata.tools/repository/npm-private/"
+    "registry": "http://your-host:8081/repository/npm-private/"
   },
   "devDependencies": {
     "@types/jest": "^29.2.2",

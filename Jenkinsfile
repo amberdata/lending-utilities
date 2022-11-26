@@ -1,27 +1,34 @@
 pipeline {
   agent { ecs { inheritFrom 'base' } }
-  tools { nodejs 'node' }
+  tools { nodejs 'node16' }
   stages {
-    stage('Install') {
+    stage('Install & Build') {
       steps {
-        yarn install
-      }
-    }
-    stage('Build') {
-      steps {
-        yarn prepare
+        sh """
+          yarn config set registry "${NPM_CONFIG_REGISTRY}"
+          yarn install --frozen-lockfile
+        """
       }
     }
     stage('Test') {
+      when { not { branch 'master'; } }
       steps {
-        yarn preversion
-        yarn test
+        sh """
+          yarn lint
+          yarn test
+        """
       }
     }
     stage('Publish') {
+      when { branch 'master' }
       steps {
-        nodejs(configId: 'npmrc-publish', nodeJSInstallationName: 'node16') {
-        npm ls -l
+        nodejs(configId:'npmrc-publish',nodeJSInstallationName:'node16') {
+          sh """
+            npm pkg set publishConfig.registry="${NPM_PRIVATE_REGISTRY}"
+            npm pkg delete private
+            NPM_CONFIG_REGISTRY=${NPM_PRIVATE_REGISTRY}
+            npm publish
+          """
         }
       }
     }
