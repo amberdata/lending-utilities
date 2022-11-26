@@ -6,7 +6,7 @@ pipeline {
       steps {
         sh """
           yarn config set registry "${NPM_CONFIG_REGISTRY}"
-          yarn install --frozen-lockfile
+          yarn install
         """
       }
     }
